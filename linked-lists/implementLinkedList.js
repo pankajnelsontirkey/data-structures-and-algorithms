@@ -60,11 +60,28 @@ class LinkedList {
 
     const newNode = { value: value, next: null };
 
-    const prevNode = this.traverseToIndex(index - 1);
+    const leftNode = this.traverseToIndex(index - 1);
 
-    newNode.next = prevNode.next;
-    prevNode.next = newNode;
+    newNode.next = leftNode.next;
+    leftNode.next = newNode;
     this.length++;
+    return this;
+  }
+
+  remove(index) {
+    if (index === 0) {
+      this.head = this.head.next;
+      return this;
+    }
+    if (index > this.length) {
+      console.log('Overflow!');
+      return this;
+    }
+
+    const leftNode = this.traverseToIndex(index - 1);
+    const currentNode = leftNode.next;
+    leftNode.next = currentNode.next;
+    this.length--;
     return this;
   }
 
@@ -106,5 +123,8 @@ myLinkedList.insert(2, 99); // 12 -> 10 -> 99 -> 5 -> 16 -> 3
 myLinkedList.insert(4, 23); // 12 -> 10 -> 99 -> 5 -> 23 -> 16 -> 3
 myLinkedList.insert(11, 36); // index > length; 12 -> 10 -> 99 -> 5 -> 23 -> 16 -> 3 -> 36
 myLinkedList.insert(0, 75); // index = 0;  75 -> 12 -> 10 -> 99 -> 5 -> 23 -> 16 -> 3 -> 36
+// myLinkedList.remove(0);
+// myLinkedList.remove(20);
+myLinkedList.remove(3);
 
 console.log(myLinkedList.printList());
