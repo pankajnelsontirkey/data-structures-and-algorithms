@@ -48,12 +48,46 @@ class LinkedList {
     return this;
   }
 
-  print() {
+  // 12 -> 10 -> {99} -> 5 -> 16 -> 3
+  insert(index, value) {
+    if (index === 0) {
+      return this.prepend(value);
+    }
+
+    if (index >= this.length) {
+      return this.append(value);
+    }
+
+    const newNode = { value: value, next: null };
+
+    const prevNode = this.traverseToIndex(index - 1);
+
+    newNode.next = prevNode.next;
+    prevNode.next = newNode;
+    this.length++;
+    return this;
+  }
+
+  traverseToIndex(index) {
+    let currentIndex = 0;
     let currentNode = this.head;
+
+    while (currentIndex !== index) {
+      currentNode = currentNode.next;
+      currentIndex++;
+    }
+    return currentNode;
+  }
+
+  printList() {
+    const list = [];
+    let currentNode = this.head;
+
     while (currentNode !== null) {
-      console.log(currentNode.value);
+      list.push(currentNode.value);
       currentNode = currentNode.next;
     }
+    return list;
   }
 
   getLength() {
@@ -63,11 +97,14 @@ class LinkedList {
 
 const myLinkedList = new LinkedList(10);
 
-myLinkedList.append(5);
-myLinkedList.append(16);
-myLinkedList.append(3);
-myLinkedList.prepend(12);
+myLinkedList.append(5); // 10 -> 5
+myLinkedList.append(16); // 10 -> 5 -> 16
+myLinkedList.append(3); // 10 -> 5 -> 16 -> 3
+myLinkedList.prepend(12); // 12 -> 10 -> 5 -> 16 -> 3
 
-myLinkedList.print();
+myLinkedList.insert(2, 99); // 12 -> 10 -> 99 -> 5 -> 16 -> 3
+myLinkedList.insert(4, 23); // 12 -> 10 -> 99 -> 5 -> 23 -> 16 -> 3
+myLinkedList.insert(11, 36); // index > length; 12 -> 10 -> 99 -> 5 -> 23 -> 16 -> 3 -> 36
+myLinkedList.insert(0, 75); // index = 0;  75 -> 12 -> 10 -> 99 -> 5 -> 23 -> 16 -> 3 -> 36
 
-console.log('length: ', myLinkedList.getLength());
+console.log(myLinkedList.printList());
